@@ -8245,11 +8245,12 @@ function updateContent(data) {
   }
   
   // LIVE STREAMING SECTION
-  if(data.streaming_image){
-    // Update gambar background live streaming
+  if(data.livestreaming_image || data.streaming_image){
+    // Update gambar couple di section livestreaming
     var streamingImages = document.querySelectorAll('#livestreaming img');
     streamingImages.forEach(function(img) {
-      img.src = data.streaming_image;
+      img.src = data.livestreaming_image || data.streaming_image;
+      console.log('Updated livestreaming image to:', img.src);
     });
   }
   if(data.streaming_title){

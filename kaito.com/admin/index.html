@@ -282,6 +282,14 @@
             </div>
 
             <div class="form-group">
+                <label>Gambar Livestreaming (Couple Photo)</label>
+                <input type="file" id="livestreaming_image_file" accept="image/*" onchange="previewImage('livestreaming_image_file', 'livestreaming_image_preview')">
+                <div id="livestreaming_image_preview" style="margin-top: 10px;"></div>
+                <input type="hidden" id="livestreaming_image">
+                <p class="help-text">Foto pasangan untuk section livestreaming</p>
+            </div>
+
+            <div class="form-group">
                 <label>Gallery Images (Multiple)</label>
                 <input type="file" id="gallery_images_files" accept="image/*" multiple onchange="previewGalleryImages('gallery_images_files', 'gallery_images_preview')">
                 <div id="gallery_images_preview" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
@@ -399,6 +407,7 @@
                     document.getElementById('groom_photo').value = data.background_section_2 || data.groom_photo || '';
                     document.getElementById('bride_photo').value = data.background_section_3 || data.bride_photo || '';
                     document.getElementById('hero_image').value = data.hero_background_image || data.hero_image || '';
+                    document.getElementById('livestreaming_image').value = data.livestreaming_image || '';
                     document.getElementById('thank_you_message').value = data.thank_you_message || '';
 
                     // Show existing images
@@ -417,6 +426,9 @@
                     if (data.hero_background_image || data.hero_image) {
                         const heroImageSrc = data.hero_background_image || data.hero_image;
                         document.getElementById('hero_image_preview').innerHTML = `<img src="${heroImageSrc}" style="max-width: 200px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0;">`;
+                    }
+                    if (data.livestreaming_image) {
+                        document.getElementById('livestreaming_image_preview').innerHTML = `<img src="${data.livestreaming_image}" style="max-width: 200px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0;">`;
                     }
                     if (data.gallery_images && data.gallery_images.length > 0) {
                         const galleryPreview = document.getElementById('gallery_images_preview');
@@ -451,6 +463,7 @@
                 let groomPhotoUrl = document.getElementById('groom_photo').value;
                 let bridePhotoUrl = document.getElementById('bride_photo').value;
                 let heroImageUrl = document.getElementById('hero_image').value;
+                let livestreamingImageUrl = document.getElementById('livestreaming_image').value;
                 let galleryImagesUrls = [];
 
                 // Upload background image
@@ -477,6 +490,13 @@
                     heroImageUrl = await uploadImage(heroImageFile, 'hero_image');
                 }
 
+                // Upload livestreaming image
+                const livestreamingImageFile = document.getElementById('livestreaming_image_file').files[0];
+                if (livestreamingImageFile) {
+                    btn.textContent = '📤 Mengupload livestreaming image...';
+                    livestreamingImageUrl = await uploadImage(livestreamingImageFile, 'livestreaming_image');
+                }
+
                 // Upload gallery images
                 if (galleryImagesFiles && galleryImagesFiles.length > 0) {
                     btn.textContent = `📤 Mengupload ${galleryImagesFiles.length} gambar gallery...`;
@@ -500,6 +520,7 @@
                     background_section_2: groomPhotoUrl,
                     background_section_3: bridePhotoUrl,
                     hero_background_image: heroImageUrl,
+                    livestreaming_image: livestreamingImageUrl,
                     thank_you_message: document.getElementById('thank_you_message').value,
                     updated_at: new Date().toISOString()
                 };
