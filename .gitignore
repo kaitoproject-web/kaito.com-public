@@ -6,5 +6,4 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .env
-kaito.com/elegant/kaito.com/wp-content/uploads/audio/
-*.mp3
+kaito.com/elegant/kaito.com/wp-content/uploads/
